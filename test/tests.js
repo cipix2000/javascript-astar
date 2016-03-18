@@ -1,7 +1,6 @@
 
 /* global Graph, astar, ok, test, equal */
 
-
 test( "Sanity Checks", function() {
   ok (typeof Graph !== "undefined", "Graph exists");
   ok (typeof astar !== "undefined", "Astar exists");
@@ -89,6 +88,39 @@ test( "Pathfinding to closest", function() {
   ], [0,0], [2,1], {closest: true});
 
   equal (result3.text, "(0,1)(1,1)(2,1)", "Result is expected - target node was reachable");
+});
+
+test( "Path costs", function() {
+  var graph1 = new Graph([
+      [1,2,2],
+      [1,1,2],
+      [1,1,2],
+  ], { diagonal: true});
+
+  var straightNeighbor = graph1.grid[1][0].getCost(graph1.grid[0][0]),
+      diagonalNeighbor = graph1.grid[1][1].getCost(graph1.grid[0][0]),
+      diagonalWeightedNeighbor = graph1.grid[2][2].getCost(graph1.grid[1][1]);
+
+  equal ((straightNeighbor == 1) , true, "Result is expected - neighbor cost is 1");
+  equal ((diagonalNeighbor > 1 && diagonalNeighbor < 2) , true, "Result is expected - diagonal neighbor cost is more than 1, less than 2");
+  equal ((diagonalWeightedNeighbor > 2 && diagonalWeightedNeighbor < 4), true, "Result is expected - diagonal neighbor cost for 2 weight node is more than 2, less than 4");
+});
+
+// Make sure that start / end position are re-opened between searches
+// See https://github.com/bgrins/javascript-astar/issues/43.
+test( "Multiple runs on the same graph", function() {
+  var graph = new Graph([
+      [1,1,0,1],
+      [0,1,1,0],
+      [0,0,1,1]
+  ]);
+
+  var result1 = runSearch(graph, [0,0], [2,3]);
+  equal (result1.text, "(0,1)(1,1)(1,2)(2,2)(2,3)", "Result is expected");
+
+  var result2 = runSearch(graph, [2,3], [0,0]);
+  equal (result2.text, "(2,2)(1,2)(1,1)(0,1)(0,0)", "Result is expected");
+
 });
 
 function runSearch(graph, start, end, options) {
