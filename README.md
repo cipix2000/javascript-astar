@@ -58,7 +58,7 @@ Binary Heap taken from http://eloquentjavascript.net/appendix2.html (license: ht
 
 ## Running the test suite
 
-[![Build Status](https://travis-ci.org/bgrins/javascript-astar.png?branch=master)](https://travis-ci.org/bgrins/javascript-astar)
+[![Build Status](https://travis-ci.org/cipix2000/javascript-astar.png?branch=master)](https://travis-ci.org/bgrins/javascript-astar)
 
 If you don't have grunt installed, follow the [grunt getting started guide](http://gruntjs.com/getting-started) first.
 
